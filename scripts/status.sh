@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "Tailscale route status (looking for /commandcenter):"
+ROUTE_PATH="${COMMAND_CENTER_PATH:-/commandcenter}"
+
+echo "Tailscale route status (looking for ${ROUTE_PATH}):"
 tailscale serve status | sed -n '1,160p'
