@@ -1,216 +1,511 @@
 <!doctype html>
 <html lang="en">
 <head>
- <meta charset="UTF-8" />
- <meta name="viewport" content="width=device-width, initial-scale=1.0" />
- <title>Command Center Template</title>
- <style>
- :root {
- --bg: #0b1020;
- --card: #121a30;
- --muted: #8fa1c7;
- --text: #e8efff;
- --accent: #58a6ff;
- --ok: #22c55e;
- --warn: #f59e0b;
- --bad: #ef4444;
- --border: #233055;
- }
- * { box-sizing: border-box; }
- body {
- margin: 0;
- font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
- background: linear-gradient(160deg, #0a0f1f 0%, #0d1530 100%);
- color: var(--text);
- }
- .wrap { max-width: 1200px; margin: 0 auto; padding: 24px; }
- .topbar {
- display: flex; justify-content: space-between; align-items: center;
- margin-bottom: 18px; gap: 12px; flex-wrap: wrap;
- }
- .title { font-size: 1.4rem; font-weight: 700; letter-spacing: 0.2px; }
- .sub { color: var(--muted); font-size: 0.92rem; }
- .pill {
- border: 1px solid var(--border);
- background: #0f1730;
- color: var(--muted);
- border-radius: 999px;
- padding: 6px 10px;
- font-size: 0.8rem;
- }
- .grid {
- display: grid;
- gap: 14px;
- grid-template-columns: repeat(12, minmax(0, 1fr));
- }
- .card {
- background: rgba(18, 26, 48, 0.9);
- border: 1px solid var(--border);
- border-radius: 14px;
- padding: 14px;
- backdrop-filter: blur(8px);
- }
- .card h3 { margin: 0 0 10px; font-size: 0.98rem; }
- .kpi {
- display: grid;
- grid-template-columns: repeat(4, minmax(0, 1fr));
- gap: 10px;
- }
- .kpi .box {
- background: #0d1430;
- border: 1px solid var(--border);
- border-radius: 10px;
- padding: 10px;
- }
- .label { color: var(--muted); font-size: 0.78rem; }
- .value { font-size: 1.18rem; font-weight: 700; margin-top: 4px; }
- .col-12 { grid-column: span 12; }
- .col-8 { grid-column: span 8; }
- .col-6 { grid-column: span 6; }
- .col-4 { grid-column: span 4; }
- .col-3 { grid-column: span 3; }
- ul { margin: 0; padding-left: 18px; }
- li { margin: 6px 0; }
- .status { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.74rem; font-weight: 600; }
- .status.ok { background: rgba(34,197,94,.15); color: #86efac; }
- .status.warn { background: rgba(245,158,11,.15); color: #fcd34d; }
- .status.bad { background: rgba(239,68,68,.15); color: #fca5a5; }
- table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
- th, td { padding: 8px; border-bottom: 1px solid #1c274a; text-align: left; }
- th { color: var(--muted); font-weight: 600; }
- @media (max-width: 920px) {
- .col-8, .col-6, .col-4, .col-3 { grid-column: span 12; }
- .kpi { grid-template-columns: repeat(2, minmax(0, 1fr)); }
- }
- </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Command Center Template</title>
+  <style>
+    :root {
+      --bg: #070b17;
+      --bg-2: #0a1327;
+      --card: rgba(16, 25, 47, 0.72);
+      --card-strong: rgba(17, 29, 56, 0.92);
+      --text: #eef4ff;
+      --muted: #9eb0d4;
+      --border: rgba(120, 150, 220, 0.22);
+      --accent: #5aa7ff;
+      --accent-2: #6ce6ff;
+      --ok: #22c55e;
+      --warn: #f59e0b;
+      --bad: #ef4444;
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.4);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, "SF Pro Text", "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1100px 520px at 10% -10%, rgba(90, 167, 255, 0.22), transparent 60%),
+        radial-gradient(1000px 420px at 95% 0%, rgba(108, 230, 255, 0.16), transparent 58%),
+        linear-gradient(160deg, var(--bg) 0%, var(--bg-2) 100%);
+      min-height: 100vh;
+    }
+
+    .wrap {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 28px 20px 36px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .title {
+      margin: 0;
+      font-size: clamp(1.4rem, 2vw, 1.9rem);
+      line-height: 1.15;
+      letter-spacing: 0.2px;
+    }
+
+    .sub {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      max-width: 760px;
+    }
+
+    .meta {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--border);
+      background: rgba(11, 19, 38, 0.88);
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 0.81rem;
+      backdrop-filter: blur(8px);
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: linear-gradient(120deg, var(--accent), var(--accent-2));
+      box-shadow: 0 0 12px rgba(90, 167, 255, 0.8);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .col-12 { grid-column: span 12; }
+    .col-8 { grid-column: span 8; }
+    .col-7 { grid-column: span 7; }
+    .col-6 { grid-column: span 6; }
+    .col-5 { grid-column: span 5; }
+    .col-4 { grid-column: span 4; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      overflow: hidden;
+    }
+
+    .cardHead {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(137, 166, 234, 0.15);
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), transparent);
+    }
+
+    .cardHead h3 {
+      margin: 0;
+      font-size: 0.95rem;
+      letter-spacing: 0.25px;
+      font-weight: 650;
+    }
+
+    .cardBody {
+      padding: 14px 16px;
+    }
+
+    .kpi {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .kpiBox {
+      background: var(--card-strong);
+      border: 1px solid rgba(131, 162, 230, 0.18);
+      border-radius: 12px;
+      padding: 12px;
+      min-height: 92px;
+      display: grid;
+      align-content: space-between;
+      gap: 8px;
+    }
+
+    .label {
+      color: var(--muted);
+      font-size: 0.76rem;
+      letter-spacing: 0.28px;
+      text-transform: uppercase;
+    }
+
+    .value {
+      font-size: 1.3rem;
+      line-height: 1.1;
+      font-weight: 760;
+      letter-spacing: 0.2px;
+    }
+
+    .objective {
+      border-left: 3px solid var(--accent);
+      padding-left: 12px;
+      color: #dce8ff;
+      font-size: 1.03rem;
+      line-height: 1.45;
+    }
+
+    .list {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .list li {
+      margin: 8px 0;
+      color: #d7e5ff;
+    }
+
+    .focusList {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 9px;
+    }
+
+    .focusItem {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 11px;
+      border-radius: 10px;
+      background: rgba(15, 24, 46, 0.88);
+      border: 1px solid rgba(128, 159, 226, 0.17);
+    }
+
+    .focusBadge {
+      width: 25px;
+      height: 25px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      color: #e9f2ff;
+      background: linear-gradient(145deg, #2a4b8c, #1b2f5a);
+      border: 1px solid rgba(146, 176, 239, 0.36);
+      flex-shrink: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.91rem;
+    }
+
+    th, td {
+      padding: 10px 8px;
+      border-bottom: 1px solid rgba(128, 158, 221, 0.14);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 0.78rem;
+      letter-spacing: 0.24px;
+      text-transform: uppercase;
+      font-weight: 630;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.74rem;
+      font-weight: 640;
+      border-radius: 999px;
+      padding: 4px 9px;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+
+    .status.ok {
+      color: #9df0bd;
+      background: rgba(34, 197, 94, 0.16);
+      border-color: rgba(34, 197, 94, 0.32);
+    }
+
+    .status.warn {
+      color: #ffd88c;
+      background: rgba(245, 158, 11, 0.16);
+      border-color: rgba(245, 158, 11, 0.32);
+    }
+
+    .status.bad {
+      color: #ffb2b2;
+      background: rgba(239, 68, 68, 0.16);
+      border-color: rgba(239, 68, 68, 0.34);
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    @media (max-width: 980px) {
+      .col-8, .col-7, .col-6, .col-5, .col-4 { grid-column: span 12; }
+      .kpi { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 560px) {
+      .wrap { padding: 18px 14px 28px; }
+      .kpi { grid-template-columns: 1fr; }
+      .value { font-size: 1.18rem; }
+    }
+  </style>
 </head>
 <body>
- <div class="wrap">
- <div class="topbar">
- <div>
- <div class="title">Command Center Template</div>
- <div class="sub">Plug in your own metrics, priorities, and campaign cadence.</div>
- </div>
- <div class="pill">Last Updated: <span id="updatedAt"></span></div>
- </div>
+  <div class="wrap">
+    <header class="topbar">
+      <div>
+        <h1 class="title">Command Center</h1>
+        <div class="sub">Your daily operator dashboard. Update the data block with your live priorities, campaigns, and events.</div>
+      </div>
+      <div class="meta">
+        <div class="pill"><span class="dot"></span>Live template</div>
+        <div class="pill">Last Updated: <span id="updatedAt"></span></div>
+      </div>
+    </header>
 
- <div class="grid">
- <section class="card col-12">
- <h3>Scoreboard</h3>
- <div class="kpi" id="kpis"></div>
- </section>
+    <main class="grid">
+      <section class="card col-12">
+        <div class="cardHead">
+          <h3>Scoreboard</h3>
+          <span class="muted">Core business pulse</span>
+        </div>
+        <div class="cardBody">
+          <div class="kpi" id="kpis"></div>
+        </div>
+      </section>
 
- <section class="card col-8">
- <h3>Top Priorities</h3>
- <ul id="priorities"></ul>
- </section>
+      <section class="card col-8">
+        <div class="cardHead">
+          <h3>Primary Objective + Top Priorities</h3>
+        </div>
+        <div class="cardBody">
+          <div class="objective" id="primaryObjective"></div>
+          <ul class="list" id="priorities"></ul>
+        </div>
+      </section>
 
- <section class="card col-4">
- <h3>Today Focus Blocks</h3>
- <ul id="focusBlocks"></ul>
- </section>
+      <section class="card col-4">
+        <div class="cardHead">
+          <h3>Today Focus Blocks</h3>
+        </div>
+        <div class="cardBody">
+          <ul class="focusList" id="focusBlocks"></ul>
+        </div>
+      </section>
 
- <section class="card col-6">
- <h3>Campaign Pipeline</h3>
- <table>
- <thead>
- <tr><th>Campaign</th><th>Status</th><th>Next Action</th></tr>
- </thead>
- <tbody id="campaigns"></tbody>
- </table>
- </section>
+      <section class="card col-7">
+        <div class="cardHead">
+          <h3>Campaign Pipeline</h3>
+        </div>
+        <div class="cardBody">
+          <table>
+            <thead>
+              <tr>
+                <th>Campaign</th>
+                <th>Status</th>
+                <th>Next Action</th>
+              </tr>
+            </thead>
+            <tbody id="campaigns"></tbody>
+          </table>
+        </div>
+      </section>
 
- <section class="card col-6">
- <h3>Upcoming Calls / Events</h3>
- <table>
- <thead>
- <tr><th>Date</th><th>Item</th><th>Owner</th></tr>
- </thead>
- <tbody id="events"></tbody>
- </table>
- </section>
+      <section class="card col-5">
+        <div class="cardHead">
+          <h3>Upcoming Calls / Events</h3>
+        </div>
+        <div class="cardBody">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Item</th>
+                <th>Owner</th>
+              </tr>
+            </thead>
+            <tbody id="events"></tbody>
+          </table>
+        </div>
+      </section>
 
- <section class="card col-12">
- <h3>Daily Execution Rules</h3>
- <ul id="rules"></ul>
- </section>
- </div>
- </div>
+      <section class="card col-12">
+        <div class="cardHead">
+          <h3>Daily Execution Rules</h3>
+        </div>
+        <div class="cardBody">
+          <ul class="list" id="rules"></ul>
+        </div>
+      </section>
+    </main>
+  </div>
 
- <script>
- const data = {
- updatedAt: new Date().toLocaleString(),
- kpis: [
- { label: "Leads", value: "215" },
- { label: "Calls Booked", value: "18" },
- { label: "Applications", value: "7" },
- { label: "Revenue Pipeline", value: "$187.5K" }
- ],
- priorities: [
- "Fill upcoming cohort using calls + outreach",
- "Run consistent 1:1 follow-up blocks daily",
- "Advance active investor opportunities",
- "Support flagship event conversion"
- ],
- focusBlocks: [
- "Campaign push: 45-60 min",
- "Personal outreach sprint: 60 min",
- "Follow-up + social: 45 min"
- ],
- campaigns: [
- { name: "Promo Call Wave", status: "Active", tone: "ok", next: "Send reminder batch" },
- { name: "Last-Chance Webinar", status: "Planned", tone: "warn", next: "Finalize landing + copy" },
- { name: "Investor Follow-up", status: "Active", tone: "ok", next: "15 personal messages" }
- ],
- events: [
- { date: "YYYY-MM-DD", item: "Campaign Update Call", owner: "Host" },
- { date: "YYYY-MM-DD", item: "Main Event", owner: "Team" },
- { date: "YYYY-MM-DD", item: "Last-Chance Webinar", owner: "Host" }
- ],
- rules: [
- "Priority order: primary revenue objective first",
- "No new projects before daily follow-up block is complete",
- "Every call ends with one clear CTA",
- "Update dashboard at end of day"
- ]
- };
+  <script>
+    const data = {
+      updatedAt: new Date().toLocaleString(),
+      primaryObjective: "Drive qualified conversations that convert into high-value commitments.",
+      kpis: [
+        { label: "Leads", value: "215" },
+        { label: "Calls Booked", value: "18" },
+        { label: "Applications", value: "7" },
+        { label: "Revenue Pipeline", value: "$187.5K" }
+      ],
+      priorities: [
+        "Fill upcoming cohort using calls + outreach",
+        "Run consistent 1:1 follow-up blocks daily",
+        "Advance active investor opportunities",
+        "Support flagship event conversion"
+      ],
+      focusBlocks: [
+        "Campaign push: 45-60 min",
+        "Personal outreach sprint: 60 min",
+        "Follow-up + social: 45 min"
+      ],
+      campaigns: [
+        { name: "Promo Call Wave", status: "Active", tone: "ok", next: "Send reminder batch" },
+        { name: "Last-Chance Webinar", status: "Planned", tone: "warn", next: "Finalize landing + copy" },
+        { name: "Investor Follow-up", status: "Active", tone: "ok", next: "15 personal messages" }
+      ],
+      events: [
+        { date: "YYYY-MM-DD", item: "Campaign Update Call", owner: "Host" },
+        { date: "YYYY-MM-DD", item: "Main Event", owner: "Team" },
+        { date: "YYYY-MM-DD", item: "Last-Chance Webinar", owner: "Host" }
+      ],
+      rules: [
+        "Priority order: primary revenue objective first",
+        "No new projects before daily follow-up block is complete",
+        "Every call ends with one clear CTA",
+        "Update dashboard at end of day"
+      ]
+    };
 
- document.getElementById("updatedAt").textContent = data.updatedAt;
+    const byId = (id) => document.getElementById(id);
 
- const kpiWrap = document.getElementById("kpis");
- data.kpis.forEach(k => {
- const box = document.createElement("div");
- box.className = "box";
- box.innerHTML = `<div class="label">${k.label}</div><div class="value">${k.value}</div>`;
- kpiWrap.appendChild(box);
- });
+    byId("updatedAt").textContent = data.updatedAt;
+    byId("primaryObjective").textContent = data.primaryObjective;
 
- const fillList = (id, arr) => {
- const el = document.getElementById(id);
- arr.forEach(item => {
- const li = document.createElement("li");
- li.textContent = item;
- el.appendChild(li);
- });
- };
+    const kpiWrap = byId("kpis");
+    data.kpis.forEach((k) => {
+      const box = document.createElement("div");
+      box.className = "kpiBox";
 
- fillList("priorities", data.priorities);
- fillList("focusBlocks", data.focusBlocks);
- fillList("rules", data.rules);
+      const label = document.createElement("div");
+      label.className = "label";
+      label.textContent = k.label;
 
- const campaignsEl = document.getElementById("campaigns");
- data.campaigns.forEach(c => {
- const tr = document.createElement("tr");
- tr.innerHTML = `<td>${c.name}</td><td><span class="status ${c.tone}">${c.status}</span></td><td>${c.next}</td>`;
- campaignsEl.appendChild(tr);
- });
+      const value = document.createElement("div");
+      value.className = "value";
+      value.textContent = k.value;
 
- const eventsEl = document.getElementById("events");
- data.events.forEach(e => {
- const tr = document.createElement("tr");
- tr.innerHTML = `<td>${e.date}</td><td>${e.item}</td><td>${e.owner}</td>`;
- eventsEl.appendChild(tr);
- });
- </script>
+      box.appendChild(label);
+      box.appendChild(value);
+      kpiWrap.appendChild(box);
+    });
+
+    const fillList = (id, arr) => {
+      const el = byId(id);
+      arr.forEach((item) => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        el.appendChild(li);
+      });
+    };
+
+    fillList("priorities", data.priorities);
+    fillList("rules", data.rules);
+
+    const focusEl = byId("focusBlocks");
+    data.focusBlocks.forEach((item, idx) => {
+      const li = document.createElement("li");
+      li.className = "focusItem";
+
+      const badge = document.createElement("span");
+      badge.className = "focusBadge";
+      badge.textContent = String(idx + 1);
+
+      const text = document.createElement("span");
+      text.textContent = item;
+
+      li.appendChild(badge);
+      li.appendChild(text);
+      focusEl.appendChild(li);
+    });
+
+    const campaignsEl = byId("campaigns");
+    data.campaigns.forEach((c) => {
+      const tr = document.createElement("tr");
+
+      const name = document.createElement("td");
+      name.textContent = c.name;
+
+      const status = document.createElement("td");
+      const statusPill = document.createElement("span");
+      statusPill.className = `status ${c.tone}`;
+      statusPill.textContent = c.status;
+      status.appendChild(statusPill);
+
+      const next = document.createElement("td");
+      next.textContent = c.next;
+
+      tr.appendChild(name);
+      tr.appendChild(status);
+      tr.appendChild(next);
+      campaignsEl.appendChild(tr);
+    });
+
+    const eventsEl = byId("events");
+    data.events.forEach((e) => {
+      const tr = document.createElement("tr");
+
+      const date = document.createElement("td");
+      date.textContent = e.date;
+
+      const item = document.createElement("td");
+      item.textContent = e.item;
+
+      const owner = document.createElement("td");
+      owner.textContent = e.owner;
+
+      tr.appendChild(date);
+      tr.appendChild(item);
+      tr.appendChild(owner);
+      eventsEl.appendChild(tr);
+    });
+  </script>
 </body>
 </html>

@@ -14,8 +14,9 @@ Requirements:
    - `./scripts/setup.sh`
    - `./scripts/status.sh`
 3. Confirm the route is live and give me the exact URL.
-4. Keep `index.html` structure unchanged, but update only the placeholder data values for my business.
+4. Keep this as a single-file static dashboard (`index.html`) and update only placeholder data values for my business.
 5. Do not add backend services, databases, or extra frameworks.
+6. Do one tasteful visual polish pass (spacing, typography, card styling, readability) while keeping it lightweight and mobile-friendly.
 
 Optional:
 - If I ask for a custom path, set it with:
